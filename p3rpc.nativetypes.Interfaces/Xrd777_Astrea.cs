@@ -537,11 +537,11 @@ public unsafe class GlobalWorkUWP : IGlobalWork
     private UGlobalWorkUWP* Self() => Data;
     public FDatUnitWork* GetUnit(int i) => &((FDatUnitWork*)((nint)Self() + 0x1b0))[i];
     
-    public unsafe byte* GetPtr() => (byte*)Self();
+    public byte* GetPtr() => (byte*)Self();
     public List<short> GetActiveCharacters()
     {
         List<short> ids = new();
-        for (int i = 0; i < 10; i++)
+        for (var i = 0; i < 10; i++)
         {
             var curr_mem = (short)Self()->ActiveCharacters[i];
             if (curr_mem == 0) break;
@@ -552,37 +552,37 @@ public unsafe class GlobalWorkUWP : IGlobalWork
 
     public bool GetBitflag(uint id)
     {
-        uint section = id >> 0x1c;
-        uint flag_int = (id >> 5 & 0x7fffff);
-        uint flag_bit = (uint)(1 << ((int)id & 0x1f));
-        switch (section)
+        var section = id >> 0x1c;
+        var flag_int = (id >> 5 & 0x7fffff);
+        var flag_bit = (uint)(1 << ((int)id & 0x1f));
+        return section switch
         {
-            case 0: return Self()->Section0[flag_int] % flag_bit == 1 ? true : false;
-            case 1: return Self()->Section1[flag_int] % flag_bit == 1 ? true : false;
-            case 2: return Self()->Section2[flag_int] % flag_bit == 1 ? true : false;
-            case 3: return Self()->Section3[flag_int] % flag_bit == 1 ? true : false;
-            case 4: return Self()->Section4[flag_int] % flag_bit == 1 ? true : false;
-            case 5: return Self()->Section5[flag_int] % flag_bit == 1 ? true : false;
-            default: return false;
-        }
+            0 => Self()->Section0[flag_int] % flag_bit == 1,
+            1 => Self()->Section1[flag_int] % flag_bit == 1,
+            2 => Self()->Section2[flag_int] % flag_bit == 1,
+            3 => Self()->Section3[flag_int] % flag_bit == 1,
+            4 => Self()->Section4[flag_int] % flag_bit == 1,
+            5 => Self()->Section5[flag_int] % flag_bit == 1,
+            _ => false
+        };
     }
     public int GetCounter(uint i) => Self()->Counters[i];
     public FDatUnitPersonaEntry* GetPersona(uint i) => &((FDatUnitPersonaEntry*)((nint)Self() + 0x4904))[i];
     public Mail* GetMail() => &Self()->Mail;
     public Calendar* GetCalendar() => &Self()->Calendar;
-    public unsafe USequence* GetSequenceInstance() => Self()->mSequenceInstance_;
-    public unsafe UCalendar* GetCalendarInstance() => Self()->mCalendarInstance_;
-    public unsafe UCldCommonData* GetCldCommonData() => Self()->mCldCommonData_;
-    public unsafe UFileNameManager* GetFileNameData() => Self()->mFileNameData_;
-    public unsafe UFldCommonData* GetFldCommonData() => Self()->mFldCommonData_;
-    public unsafe UDatItem* GetItemData() => Self()->mItemData_;
-    public unsafe UTrophyManager* GetTrophy() => Self()->mTrophy_;
-    public unsafe ULeaderBoardManager* GetLeaderBoard() => Self()->mLeaderBoard_;
-    public unsafe USignedInDialog* GetSignedInDialog() => Self()->mSignedInDialog_;
-    public unsafe UErrorDialog* GetErrorDialog() => Self()->mErrorDialog_;
-    public unsafe UMessageDialog* GetMessageDialog() => Self()->mMessageDialog_;
-    public unsafe UBustupController* GetBustupController() => Self()->pBustupController;
-    public unsafe UCommunityWork* GetCommunityWork() => Self()->pCommunityWork;
-    public unsafe UMsgWork* GetMsgWork() => Self()->pMsgWork;
-    public unsafe UEvtDataLoad* GetEvtDataLoad() => Self()->pEvtDataLoad;
+    public USequence* GetSequenceInstance() => Self()->mSequenceInstance_;
+    public UCalendar* GetCalendarInstance() => Self()->mCalendarInstance_;
+    public UCldCommonData* GetCldCommonData() => Self()->mCldCommonData_;
+    public UFileNameManager* GetFileNameData() => Self()->mFileNameData_;
+    public UFldCommonData* GetFldCommonData() => Self()->mFldCommonData_;
+    public UDatItem* GetItemData() => Self()->mItemData_;
+    public UTrophyManager* GetTrophy() => Self()->mTrophy_;
+    public ULeaderBoardManager* GetLeaderBoard() => Self()->mLeaderBoard_;
+    public USignedInDialog* GetSignedInDialog() => Self()->mSignedInDialog_;
+    public UErrorDialog* GetErrorDialog() => Self()->mErrorDialog_;
+    public UMessageDialog* GetMessageDialog() => Self()->mMessageDialog_;
+    public UBustupController* GetBustupController() => Self()->pBustupController;
+    public UCommunityWork* GetCommunityWork() => Self()->pCommunityWork;
+    public UMsgWork* GetMsgWork() => Self()->pMsgWork;
+    public UEvtDataLoad* GetEvtDataLoad() => Self()->pEvtDataLoad;
 }

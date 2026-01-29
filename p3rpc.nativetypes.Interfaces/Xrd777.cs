@@ -608,44 +608,44 @@ public unsafe struct FCampParamTableCommonRow //: public FTableRowBase
     [FieldOffset(0x0344)] public FVector2D NamiConfigBScale;
     [FieldOffset(0x034C)] public FColor NamiConfigBColor;
     [FieldOffset(0x0350)] public bool NamiConfigBAddBlend;
-    [FieldOffset(0x0354)] public FColor LightVecOfsTop;
-    [FieldOffset(0x0364)] public FColor LightVecOfsSkill;
-    [FieldOffset(0x0374)] public FColor LightVecOfsItem;
-    [FieldOffset(0x0384)] public FColor LightVecOfsEquip;
-    [FieldOffset(0x0394)] public FColor LightVecOfsPersona;
-    [FieldOffset(0x03A4)] public FColor LightVecOfsStatus;
-    [FieldOffset(0x03B4)] public FColor LightVecOfsQuest;
-    [FieldOffset(0x03C4)] public FColor LightVecOfsCommu;
-    [FieldOffset(0x03D4)] public FColor LightVecOfsCalender;
-    [FieldOffset(0x03E4)] public FColor LightVecOfsSystem;
+    [FieldOffset(0x0354)] public FVector4 LightVecOfsTop;
+    [FieldOffset(0x0364)] public FVector4 LightVecOfsSkill;
+    [FieldOffset(0x0374)] public FVector4 LightVecOfsItem;
+    [FieldOffset(0x0384)] public FVector4 LightVecOfsEquip;
+    [FieldOffset(0x0394)] public FVector4 LightVecOfsPersona;
+    [FieldOffset(0x03A4)] public FVector4 LightVecOfsStatus;
+    [FieldOffset(0x03B4)] public FVector4 LightVecOfsQuest;
+    [FieldOffset(0x03C4)] public FVector4 LightVecOfsCommu;
+    [FieldOffset(0x03D4)] public FVector4 LightVecOfsCalender;
+    [FieldOffset(0x03E4)] public FVector4 LightVecOfsSystem;
     [FieldOffset(0x03F4)] public uint Edit_Key_Lock_Frame;
     [FieldOffset(0x03F8)] public float Edit_GuideLine_X;
     [FieldOffset(0x03FC)] public uint Edit_StatusKeyLockFrame;
-    [FieldOffset(0x0400)] public FColor Edit_Root_FillColor;
+    [FieldOffset(0x0400)] public FLinearColor Edit_Root_FillColor;
     [FieldOffset(0x0410)] public float Edit_Root_Near;
     [FieldOffset(0x0414)] public float Edit_Root_Far;
-    [FieldOffset(0x0418)] public FColor Edit_Skill_FillColor;
+    [FieldOffset(0x0418)] public FLinearColor Edit_Skill_FillColor;
     [FieldOffset(0x0428)] public float Edit_Skill_Near;
     [FieldOffset(0x042C)] public float Edit_Skill_Far;
-    [FieldOffset(0x0430)] public FColor Edit_Item_FillColor;
+    [FieldOffset(0x0430)] public FLinearColor Edit_Item_FillColor;
     [FieldOffset(0x0440)] public float Edit_Item_Near;
     [FieldOffset(0x0444)] public float Edit_Item_Far;
-    [FieldOffset(0x0448)] public FColor Edit_Equip_FillColor;
+    [FieldOffset(0x0448)] public FLinearColor Edit_Equip_FillColor;
     [FieldOffset(0x0458)] public float Edit_Equip_Near;
     [FieldOffset(0x045C)] public float Edit_Equip_Far;
-    [FieldOffset(0x0460)] public FColor Edit_Status_FillColor;
+    [FieldOffset(0x0460)] public FLinearColor Edit_Status_FillColor;
     [FieldOffset(0x0470)] public float Edit_Status_Near;
     [FieldOffset(0x0474)] public float Edit_Status_Far;
-    [FieldOffset(0x0478)] public FColor Edit_Quest_FillColor;
+    [FieldOffset(0x0478)] public FLinearColor Edit_Quest_FillColor;
     [FieldOffset(0x0488)] public float Edit_Quest_Near;
     [FieldOffset(0x048C)] public float Edit_Quest_Far;
-    [FieldOffset(0x0490)] public FColor Edit_Commu_FillColor;
+    [FieldOffset(0x0490)] public FLinearColor Edit_Commu_FillColor;
     [FieldOffset(0x04A0)] public float Edit_Commu_Near;
     [FieldOffset(0x04A4)] public float Edit_Commu_Far;
-    [FieldOffset(0x04A8)] public FColor Edit_System_FillColor;
+    [FieldOffset(0x04A8)] public FLinearColor Edit_System_FillColor;
     [FieldOffset(0x04B8)] public float Edit_System_Near;
     [FieldOffset(0x04BC)] public float Edit_System_Far;
-    [FieldOffset(0x04C0)] public FColor Edit_Config_FillColor;
+    [FieldOffset(0x04C0)] public FLinearColor Edit_Config_FillColor;
     [FieldOffset(0x04D0)] public float Edit_Config_Near;
     [FieldOffset(0x04D4)] public float Edit_Config_Far;
 };
@@ -2043,19 +2043,19 @@ public unsafe class GlobalWork : IGlobalWork
 
     public bool GetBitflag(uint id)
     {
-        uint section = id >> 0x1c;
-        uint flag_int = (id >> 5 & 0x7fffff);
-        uint flag_bit = (uint)(1 << ((int)id & 0x1f));
-        switch (section)
+        var section = id >> 0x1c;
+        var flag_int = (id >> 5 & 0x7fffff);
+        var flag_bit = (uint)(1 << ((int)id & 0x1f));
+        return section switch
         {
-            case 0: return Self()->Section0[flag_int] % flag_bit == 1 ? true : false;
-            case 1: return Self()->Section1[flag_int] % flag_bit == 1 ? true : false;
-            case 2: return Self()->Section2[flag_int] % flag_bit == 1 ? true : false;
-            case 3: return Self()->Section3[flag_int] % flag_bit == 1 ? true : false;
-            case 4: return Self()->Section4[flag_int] % flag_bit == 1 ? true : false;
-            case 5: return Self()->Section5[flag_int] % flag_bit == 1 ? true : false;
-            default: return false;
-        }
+            0 => Self()->Section0[flag_int] % flag_bit == 1,
+            1 => Self()->Section1[flag_int] % flag_bit == 1,
+            2 => Self()->Section2[flag_int] % flag_bit == 1,
+            3 => Self()->Section3[flag_int] % flag_bit == 1,
+            4 => Self()->Section4[flag_int] % flag_bit == 1,
+            5 => Self()->Section5[flag_int] % flag_bit == 1,
+            _ => false
+        };
     }
     public int GetCounter(uint i) => Self()->Counters[i];
     public FDatUnitPersonaEntry* GetPersona(uint i) => &((FDatUnitPersonaEntry*)((nint)Self() + 0x439c))[i];
